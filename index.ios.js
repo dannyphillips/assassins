@@ -1,72 +1,50 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   Image,
+  Navigator,
   StyleSheet,
   Text,
   TextInput,
+  TouchableHighlight,
   View
 } from 'react-native';
 
+import users from './src/data/users';
+import player from './src/data/player';
 
 import KillArea from './src/KillArea';
 import InfoArea from './src/InfoArea';
 import ListArea from './src/ListArea';
 
-class assassins extends Component {
+class Assassins extends Component {
   render() {
-    const players = [
-      {
-        name: "Danny",
-        alias: "Lucky Llama",
-        points: 100,
-        target: "James",
-        alive: 1,
-      },
-      {
-        name: "James",
-        alias: "Majestic Mountain",
-        points: 200,
-        target: "Noah",
-        alive: 1,
-      },
-      {
-        name: "Marcus",
-        alias: "Dirty Dave",
-        points: 300,
-        target: null,
-        alive: 0,
-      },
-      {
-        name: "Noah",
-        alias: "Golden Goose",
-        points: 400,
-        target: "Danny",
-        alive: 1,
-      },
+    const routes = [
+      {title: 'First Scene', index: 0},
+      {title: 'Second Scene', index: 1},
     ];
-
-    const player = {
-        name: "Noah",
-        alias: "Golden Goose",
-        points: 400,
-        target: "Danny",
-        alive: 1,
-        discovered: ["James", "Marcus"]
-      };
-
     return (
-      <View style={styles.container}>
-        <InfoArea alias={player.alias} points={player.points} />
-        <ListArea players={players} player={player} />
-        <KillArea name={player.name} />
-      </View>
+      <Navigator
+        initialRoute={routes[0]}
+        initialRouteStack={routes}
+        renderScene={(route, navigator) =>
+          <View style={styles.container}>
+            <TouchableHighlight onPress={() => {
+                if (route.index === 0) {
+                  navigator.push(routes[1]);
+                } else {
+                  navigator.pop();
+                }
+              }}>
+              <Text>Hello {route.title}!</Text>
+            </TouchableHighlight>
+            <InfoArea alias={player.alias} points={player.points} />
+            <ListArea players={users} player={player} />
+            <KillArea name={player.name} />
+          </View>
+        }
+        style={{padding: 5}}
+      />
     );
   }
 }
@@ -80,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('assassins', () => assassins);
+AppRegistry.registerComponent('assassins', () => Assassins);

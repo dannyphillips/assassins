@@ -21,7 +21,7 @@ import ListArea from './src/ListArea';
 
 class assassins extends Component {
   render() {
-    const users = [
+    const players = [
       {
         name: "Danny",
         alias: "Lucky Llama",
@@ -52,11 +52,20 @@ class assassins extends Component {
       },
     ];
 
+    const player = {
+        name: "Noah",
+        alias: "Golden Goose",
+        points: 400,
+        target: "Danny",
+        alive: 1,
+        discovered: ["James", "Marcus"]
+      };
+
     return (
       <View style={styles.container}>
-        <InfoArea alias="Majestic Island" points="999" />
-        <ListArea users={users} />
-        <KillArea name="Jeff Lebowski" />
+        <InfoArea alias={player.alias} points={player.points} />
+        <ListArea players={players} player={player} />
+        <KillArea name={player.name} />
       </View>
     );
   }

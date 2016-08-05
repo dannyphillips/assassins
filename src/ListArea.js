@@ -9,9 +9,20 @@ import {
 
 export default class ListArea extends React.Component {
   render() {
+    const playerElements = this.props.players.map((playerObj, index) => {
+      const alias = this.props.player.discovered.indexOf(playerObj.name) > -1 ? playerObj.alias : "???"
+
+      return <View key={`player${index}`}>
+        <Text style={styles.label}>{playerObj.points}</Text>
+        <Text style={styles.label}>{playerObj.name}</Text>
+        <Text style={styles.label}>{alias}</Text>
+      </View>
+    });
+
     return (
       <View style={styles.main}>
-        <Text style={styles.label}>User list</Text>
+        <Text style={styles.title}>User list</Text>
+        {playerElements}
         <Image style={styles.img} source={require('./images/trophy.png')} />
       </View>
     );
@@ -23,8 +34,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     alignSelf: 'stretch',
     backgroundColor: '#444',
-    flex: 1,
-    maxHeight: 100,
   },
   img: {
     height: 70,
@@ -42,6 +51,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5,
     width: 200,
+  },
+  title: {
+    color: 'white',
+    fontSize: 14,
+    margin: 5,
   },
   label: {
     color: 'white',

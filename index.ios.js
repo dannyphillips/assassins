@@ -14,14 +14,13 @@ import {
   View
 } from 'react-native';
 
-import KillArea from './KillArea';
+import KillArea from './src/KillArea';
 
 class assassins extends Component {
   render() {
     return (
       <View style={styles.container}>
         <KillArea name="Jeff Lebowski" />
-        <Image style={styles.crosshair} source={require('./crosshair.svg')} />
       </View>
     );
   }

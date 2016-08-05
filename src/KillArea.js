@@ -17,7 +17,7 @@ export default class KillArea extends React.Component {
         <Text style={styles.label}>{this.props.name.toUpperCase()}</Text>
         <Text style={styles.label}>ALIAS: </Text>
         <TextInput style={styles.textEdit} value="Placeholder" />
-        <Image style={styles.crosshair} source={require('./crosshairs.png')} />
+        <Image style={styles.crosshair} source={require('./images/crosshairs.png')} />
       </View>
     );
   }

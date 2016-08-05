@@ -3,28 +3,28 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-
-window.navigator.userAgent = 'react-native';
-
 import React, { Component } from 'react';
-// import io from 'socket.io-client/socket.io';
-// import socket from 'phoenix-socket';
 import { Socket } from './phoenix.js';
 
 import {
   AppRegistry,
   Image,
+  Navigator,
   StyleSheet,
   Text,
   TextInput,
+  TouchableHighlight,
   View
 } from 'react-native';
+
+import users from './src/data/users';
+import player from './src/data/player';
 
 import KillArea from './src/KillArea';
 import InfoArea from './src/InfoArea';
 import ListArea from './src/ListArea';
 
-class assassins extends Component {
+class Assassins extends Component {
   componentDidMount() {
     const url = "https://assassins-staging.herokuapp.com/api/socket/websocket";
     const socket = new Socket(url);
@@ -43,52 +43,32 @@ class assassins extends Component {
   }
 
   render() {
-    const players = [
-      {
-        name: "Danny",
-        alias: "Lucky Llama",
-        points: 100,
-        target: "James",
-        alive: true,
-      },
-      {
-        name: "James",
-        alias: "Majestic Mountain",
-        points: 200,
-        target: "Noah",
-        alive: true,
-      },
-      {
-        name: "Marcus",
-        alias: "Dirty Dave",
-        points: 300,
-        target: null,
-        alive: false,
-      },
-      {
-        name: "Noah",
-        alias: "Golden Goose",
-        points: 400,
-        target: "Danny",
-        alive: true,
-      },
+    const routes = [
+      {title: 'First Scene', index: 0},
+      {title: 'Second Scene', index: 1},
     ];
-
-    const player = {
-        name: "Noah",
-        alias: "Golden Goose",
-        points: 400,
-        target: "Danny",
-        alive: 1,
-        discovered: ["James", "Marcus"]
-      };
-
     return (
-      <View style={styles.container}>
-        <InfoArea alias={player.alias} points={player.points} />
-        <ListArea players={players} player={player} />
-        <KillArea name={player.name} />
-      </View>
+      <Navigator
+        initialRoute={routes[0]}
+        initialRouteStack={routes}
+        renderScene={(route, navigator) =>
+          <View style={styles.container}>
+            <TouchableHighlight onPress={() => {
+                if (route.index === 0) {
+                  navigator.push(routes[1]);
+                } else {
+                  navigator.pop();
+                }
+              }}>
+              <Text>Hello {route.title}!</Text>
+            </TouchableHighlight>
+            <InfoArea alias={player.alias} points={player.points} />
+            <ListArea players={users} player={player} />
+            <KillArea name={player.name} />
+          </View>
+        }
+        style={{padding: 5}}
+      />
     );
   }
 }
@@ -102,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('assassins', () => assassins);
+AppRegistry.registerComponent('assassins', () => Assassins);

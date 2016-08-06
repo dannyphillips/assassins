@@ -9,52 +9,66 @@ import {
   TouchableHighlight,
   View
 } from 'react-native';
+import { Button } from 'native-base';
 
-import users from './src/data/users';
-import player from './src/data/player';
-
-import KillArea from './src/KillArea';
-import InfoArea from './src/InfoArea';
-import ListArea from './src/ListArea';
+import Game from './src/Game';
+import Lobby from './src/Lobby';
 
 class Assassins extends Component {
+  renderScene(route, navigator) {
+    switch (route.title) {
+      case 'Game':
+        return <Game route={route} navigator={navigator} renderScene={this.renderScene} />;
+      default :
+        return <Lobby route={route} navigator={navigator} renderScene={this.renderScene} />;
+    }
+   }
   render() {
     const routes = [
-      {title: 'First Scene', index: 0},
-      {title: 'Second Scene', index: 1},
+      {title: 'Lobby', index: 0},
+      {title: 'Game', index: 1},
     ];
     return (
       <Navigator
         initialRoute={routes[0]}
         initialRouteStack={routes}
         renderScene={(route, navigator) =>
-          <View style={styles.container}>
-            <TouchableHighlight onPress={() => {
-                if (route.index === 0) {
-                  navigator.push(routes[1]);
-                } else {
-                  navigator.pop();
-                }
-              }}>
-              <Text>Hello {route.title}!</Text>
-            </TouchableHighlight>
-            <InfoArea alias={player.alias} points={player.points} />
-            <ListArea players={users} player={player} />
-            <KillArea name={player.name} />
-          </View>
+          <Button onPress={() => {
+            route.index === 0 ? navigator.push(routes[1]) : navigator.pop();
+            }}
+          >
+            <Text>Go To {route.title}!</Text>
+          </Button>
         }
-        style={{padding: 5}}
+        style={styles.navbar}
+        configureScene={(route, routeStack) =>
+          Navigator.SceneConfigs.PushFromRight
+        }
+        navigationBar={
+         <Navigator.NavigationBar
+           routeMapper={{
+             LeftButton: (route, navigator, index, navState) =>
+              { return (<Text>Cancel</Text>); },
+             RightButton: (route, navigator, index, navState) =>
+               { return (<Text>Done</Text>); },
+             Title: (route, navigator, index, navState) =>
+               { return (<Text>{route.title}</Text>); },
+           }}
+           style={{backgroundColor: 'gray'}}
+         />
+        }
       />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+
+  navbar: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    paddingTop: 100,
+    backgroundColor: '#69FACE',
   },
 });
 
